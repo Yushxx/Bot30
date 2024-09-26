@@ -1,6 +1,6 @@
 const http = require('http');
 
-const TelegramBot = require('node-telegram-bot-api');
+    const TelegramBot = require('node-telegram-bot-api');
 const token = '6544724506:AAHUPaz3qzlEoCzYAzQlMd_jvkRcCCqS4n4';  // Remplace par ton token de bot
 const bot = new TelegramBot(token, { polling: true });
 
@@ -41,15 +41,12 @@ function schedulePredictions() {
 
   if (currentHour >= startHour && currentHour < endHour) {
     const predictionMessage = generatePrediction();
-    bot.sendMessage(channelId, predictionMessage, { parse_mode: 'Markdown' });
+    bot.sendMessage(channelId, predictionMessage, { parse_mode: 'Markdown', disable_web_page_preview: true });
   }
 
   // Replanifier la prochaine prédiction dans 30 minutes
   setTimeout(schedulePredictions, 30 * 60 * 1000);
 }
-
-// Lancement initial des prédictions automatiques
-schedulePredictions();
 
 // Commande manuelle pour envoyer une prédiction
 bot.onText(/\/prediction/, (msg) => {
@@ -57,8 +54,8 @@ bot.onText(/\/prediction/, (msg) => {
   const predictionMessage = generatePrediction();
   
   // Envoie la prédiction dans le canal et aussi en privé à l'utilisateur
-  bot.sendMessage(channelId, predictionMessage, { parse_mode: 'Markdown' });
-  bot.sendMessage(chatId, 'Prédiction envoyée dans le canal !', { parse_mode: 'Markdown' });
+  bot.sendMessage(channelId, predictionMessage, { parse_mode: 'Markdown', disable_web_page_preview: true });
+  bot.sendMessage(chatId, 'Prédiction envoyée dans le canal !', { disable_web_page_preview: true });
 });
 
 bot.on('polling_error', (error) => {

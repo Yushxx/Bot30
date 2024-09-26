@@ -1,4 +1,5 @@
 const http = require('http');
+
 const TelegramBot = require('node-telegram-bot-api');
 const token = '6544724506:AAHUPaz3qzlEoCzYAzQlMd_jvkRcCCqS4n4';  // Remplace par ton token de bot
 const bot = new TelegramBot(token, { polling: true });
@@ -47,16 +48,22 @@ function schedulePredictions() {
   setTimeout(schedulePredictions, 30 * 60 * 1000);
 }
 
-// Lancement initial des prédictions
+// Lancement initial des prédictions automatiques
 schedulePredictions();
+
+// Commande manuelle pour envoyer une prédiction
+bot.onText(/\/prediction/, (msg) => {
+  const chatId = msg.chat.id;
+  const predictionMessage = generatePrediction();
+  
+  // Envoie la prédiction dans le canal et aussi en privé à l'utilisateur
+  bot.sendMessage(channelId, predictionMessage, { parse_mode: 'Markdown' });
+  bot.sendMessage(chatId, 'Prédiction envoyée dans le canal !', { parse_mode: 'Markdown' });
+});
 
 bot.on('polling_error', (error) => {
   console.log(error);  // Gère les erreurs de polling
 });
-
-
-
-
 // Créez un serveur HTTP simple qui renvoie "I'm alive" lorsque vous accédez à son URL
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });

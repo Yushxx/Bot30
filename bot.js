@@ -1,5 +1,6 @@
+const http = require('http');
 const TelegramBot = require('node-telegram-bot-api');
-const token = 'TON_TOKEN_ICI';  // Remplace par ton token de bot
+const token = '6544724506:AAHUPaz3qzlEoCzYAzQlMd_jvkRcCCqS4n4';  // Remplace par ton token de bot
 const bot = new TelegramBot(token, { polling: true });
 
 const channelId = '@TomyTips'; // ID du canal où les prédictions seront envoyées
@@ -51,4 +52,19 @@ schedulePredictions();
 
 bot.on('polling_error', (error) => {
   console.log(error);  // Gère les erreurs de polling
+});
+
+
+
+
+// Créez un serveur HTTP simple qui renvoie "I'm alive" lorsque vous accédez à son URL
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write("I'm alive");
+    res.end();
+});
+
+// Écoutez le port 8080
+server.listen(8080, () => {
+    console.log("Keep alive server is running on port 8080");
 });
